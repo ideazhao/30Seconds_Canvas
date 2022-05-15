@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炫彩小球</title>
+</head>
+<body>
+    <canvas class="ballbox" width="800" height="800"></canvas>
+    <script>
+        const ballbox = document.querySelector('.ballbox')
+        ctx = ballbox.getContext('2d')
+        const ballList = []  //存放所有绘制的球
+
+        class Ball{
+            constructor(x,y,r){
+                this.x = x
+                this.y = y
+                this.r = r
+                this.color = randomColor()
+                // 上面能完成的是静止的圆，这两个参数让它们动起来
+                this.dx = parseInt(Math.random()*10 - 5)
+                this.dy = parseInt(Math.random()*10 - 5 )
+            }
+            render() {
+                ctx.beginPath()
+                ctx.arc(this.x,this.y,this.r,0,Math.PI*2,false)
+                ctx.fillStyle = this.color
+                ctx.fill()
+            }
+            // 更新值，才能看到动画的效果
+            update() {
+                this.x += this.dx
+                this.y += this.dy
+                this.r -= 0.5
+                if(this.r < 0.5){
+                    this.remove()
+                }
+            }
+            // 当值更新到无可更新，删除本球
+            remove(){
+                ballList.forEach((item,index)=>{
+                    if(this == ballList[index]){
+                        ballList.splice(index,1)
+                    }
+                })
+            }
+        }
+
+        // 获取随机颜色
+        function randomColor(){
+            let colorList = [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f']
+            let prefix = '#';
+            for(let i = 0;i < 6;i++){
+                let random = parseInt(Math.random()*colorList.length)
+                prefix += colorList[random]
+            }
+            return prefix
+        }
+        
+        // 监听鼠标移动
+        ballbox.addEventListener('mousemove',(e)=>{
+            let posX = e.offsetX,
+                posY = e.offsetY;
+                radius = parseInt((Math.random() + 1) * 10)
+            let ball = new Ball(posX,posY,radius)
+            ballList.push(ball)
+        })
+
+        // 动画动作
+        setInterval(()=>{
+            // 动画清屏
+            ctx.clearRect(0,0,ballbox.width,ballbox.height)
+            // 重新绘制
+            ballList.forEach(ball=>{
+                ball.update()
+                ball.render()
+            })
+        },100)
+
+    </script>
+
+</body>
+</html>
