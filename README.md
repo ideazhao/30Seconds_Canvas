@@ -3,4 +3,5 @@
 
 ## 目录
 [炫彩小球](./colorfulBall.html)
-![炫彩小球](image/colorfulBall.png)
+
+![炫彩小球]((https://github.com/ideazhao/30Seconds_Canvas/raw/master/image/colorfulBall.png)
