@@ -3,3 +3,4 @@
 
 ## 目录
 [炫彩小球](./colorfulBall.html)
+![炫彩小球](image/colorfulBall.png)
