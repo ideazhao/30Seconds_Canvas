@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>碰撞小球</title>
+    <style>
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+        const canvas = document.querySelector('#myCanvas')
+        ctx = canvas.getContext('2d')
+        canvas.width = document.documentElement.clientWidth- 30
+        canvas.height = document.documentElement.clientHeight - 30
+
+        class Ball{
+            constructor(x,y,r){
+                this.x = x;
+                this.y = y;
+                this.r = r;
+                this.dx = parseInt(Math.random()*10) - 5
+                this.dy = parseInt(Math.random()*10) - 5
+            }
+            render(){
+                ctx.beginPath()
+                ctx.arc(this.x,this.y,this.r,0,Math.PI*2,false)
+                ctx.fillStyle = 'rgba(255,0,0,.5)'
+                ctx.fill()
+            }
+            // 动画核心
+            update(){
+                this.x += this.dx
+                this.y += this.dy
+                // 碰撞检测
+                if(this.x <= this.r || this.x >= canvas.width - this.r){
+                    this.dx = -this.dx
+                }
+                if(this.y <= this.r || this.y >= canvas.height - this.r){
+                    this.dy = -this.dy
+                }
+            }
+        }
+
+        // 鼠标点击处生成小球
+        let ballArr = []
+        canvas.addEventListener('click',(e)=>{
+            ballArr.push(new Ball(e.offsetX,e.offsetY,20))
+        })
+
+        // 动起来
+        setInterval(()=>{
+            ctx.clearRect(0,0,canvas.width,canvas.height)
+            ballArr.forEach(ball=>{
+                ball.update()
+                ball.render()
+            })
+        },20)
+    </script>
+</body>
+</html>
